@@ -2,10 +2,42 @@
 
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
+
+
+
+<!-- iBATIS 컨테이너가 로딩하는 XML에 등록된 XML 
+태그 하나 당 Mapped Statement 라는 객체가 메모리에 하나씩 뜸 -> id로 식별 -->
 <sqlMap>
-	
+	<insert id="insertBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+		insert into board(seq, title, writer, content)
+		values((select nvl(max(seq), 0) + 1 from board), #title#, #writer#, #content#)
+	</insert>
+
+	<update id="updateBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+		update board set title = #title#, content = #content# where seq = #seq#
+	</update>
+ 
+	<delete id="deleteBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+		delete board where seq = #seq#
+	</delete>
+
+	<select id="getBoard" parameterClass="com.ssamz.biz.board.BoardVO"  
+		                  resultClass="com.ssamz.biz.board.BoardVO">
+		select * from board where seq = #seq#
+	</select>
+
+	<select id="getBoardList" resultClass="com.ssamz.biz.board.BoardVO">
+		select * from board order by seq desc
+	</select>
 </sqlMap>
 
+
+<!-- 
+parameterClass : 이 SQL 실행할때 파라미터로 받을 객체, 물음표 있는 SQL문은 다 필요함  
+# : 변수 (컬럼 이름과 VO 객체의 변수 이름을 구분)
+resultClass : <select>만 사용, 받은 검색결과(result set)를 매핑할 객체 (화면에 뿌리기 전) 
+VO : 디비에 SQL 날릴때 사용, 디비에서 받은거 담아서 화면에 뿌릴때 사용 
+-->
 
 
 
