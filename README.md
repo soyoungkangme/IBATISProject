@@ -1,4 +1,4 @@
-iBATIS
+# iBATIS
 
 - apache가 만든 오픈소스 프레임워크  
 - DAO 클래스의 SQL을 XML 파일에 분리  
@@ -15,11 +15,11 @@ iBATIS
 
 <BoardDAO.java>  
 2. iBATIS 컨테이너 획득 (SqlMapClient)  
-  
+
 3. SqlMapClientFactoryBean(공장)로부터 iBATIS 컨테이너 획득  
 - 우리가 안만들지만 이해를 위해 만들어봄  
 - sql-map-config.xml 로딩  
 - board-mapping(ibatis).xml  : iBATIS 컨테이너가 로딩하는 XML에 등록된 XML  
  =>  태그 하나 당 Mapped Statement 라는 객체가 메모리에 하나씩 뜸 -> id로 식별  
-  
+
 4. 디비 소통 한줄로 처리 (ibatis.insert/update/delete/queryForObject/queryForList)
