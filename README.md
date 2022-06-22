@@ -26,4 +26,16 @@
 - board-mapping(ibatis).xml  : iBATIS 컨테이너가 로딩하는 XML에 등록된 XML  
  =>  태그 하나 당 Mapped Statement 라는 객체가 메모리에 하나씩 뜸 -> id로 식별  
 
-4. 디비 소통 한줄로 처리 (ibatis.insert/update/delete/queryForObject/queryForList)
+4. 디비 소통 한줄로 처리 (ibatis.insert/update/delete/queryForObject/queryForList
+
+## iBATIS, Spring 연동 (SpringProject 소스 수정)  
+<business-layer.java>  
+- iBATIS 컨테이너를 위한 공장(스프링이 제공) 빈등록  
+- XML, dataSource 세터 인젝션  
+- 컨테이너 공장 세터인젝션으로 sqlMapClient 템플릿 클래스 빈등록  
+<BoardDAOIBATIS.java>  
+- sqlMapClient 템플릿 타입 인젝션  
+- 의존성 주입한 템플릿의 메서드로 디비연동 한줄로 처리 ( insert/update/delete/queryForObject/queryForList() )  
+<board-mapping(ibatis).xml>  
+- 조건 검색 기능 추가  (다이나믹 SQL : id가 getBoardList인 하나의 SQL을 동적으로 변형시켜 검색 처리)  
+isEqual : property가 compareValue와 같으면 and title/content like
