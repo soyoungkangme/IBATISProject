@@ -7,9 +7,13 @@
 <br>
 
 <board-mapping(ibatis).xml>  
-1. DAO 의 sql 분리  
+1. DAO 의 sql 분리 (SQL과 parameter 객체, result 객체 매핑)  
 - parameterClass : 디비에 sql 날릴때 세팅할 객체  
 - resultClass : 디비에서 받은 결과 담을 객체 
+- resultMap : 매핑 하기 전 반환 받을 객체 선언  
+=> resultClass는 선언 안해도 자동으로 매핑해주지만 컬럼 이름과 변수의 이름이 동일하지 않은 경우 필요함  
+(SQL에서 as 로 컬럼값 변경 가능, 언더바 안되고 대소문자는 상관없음)  
+- <![CDATA[]]>  :  SQL에 작다, 크다 연산자 있을때 여기에 넣어야함 (문법)  
 
 <br>
 
