@@ -7,9 +7,11 @@ import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
+
+// 스프링이 제공함, 이해를 위해 만들어봄 
 public class SqlMapClientFactoryBean {
 	
-	private static SqlMapClient sqlMapClient = null;
+	private static SqlMapClient sqlMapClient = null; 
 	
 	static {   // static 블럭은 가장 먼저 무조건 실행 
 		

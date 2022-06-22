@@ -5,38 +5,56 @@
 
 
 
-<!-- iBATIS 컨테이너가 로딩하는 XML에 등록된 XML 
+<!-- SQL과 parameter 객체, result 객체 매핑 
+iBATIS 컨테이너가 로딩하는 XML에 등록된 XML 
 태그 하나 당 Mapped Statement 라는 객체가 메모리에 하나씩 뜸 -> id로 식별 -->
 <sqlMap>
-	<insert id="insertBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+
+    <typeAlias alias="board" type="com.ssamz.biz.board.BoardVO"/>
+    
+    <resultMap class="board" id="boardResult">
+        <result property="seq" column="SEQ"/>
+        <result property="title" column="TILTE"/>
+        <result property="writer" column="WRITER"/>
+        <result property="content" column="CONTENT"/>
+        <result property="regDate" column="REGDATE"/>
+        <result property="cnt" column="CNT"/>
+    </resultMap>
+
+	<insert id="insertBoard">
 		insert into board(seq, title, writer, content)
 		values((select nvl(max(seq), 0) + 1 from board), #title#, #writer#, #content#)
 	</insert>
 
-	<update id="updateBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+	<update id="updateBoard">
 		update board set title = #title#, content = #content# where seq = #seq#
 	</update>
  
-	<delete id="deleteBoard" parameterClass="com.ssamz.biz.board.BoardVO">
+	<delete id="deleteBoard">
 		delete board where seq = #seq#
 	</delete>
 
-	<select id="getBoard" parameterClass="com.ssamz.biz.board.BoardVO"  
-		                  resultClass="com.ssamz.biz.board.BoardVO">
-		select * from board where seq = #seq#
+	<select id="getBoard" resultClass="board">
+		<![CDATA[
+		select * from board where seq <= #seq#
+		]]>
 	</select>
 
-	<select id="getBoardList" resultClass="com.ssamz.biz.board.BoardVO">
+	<select id="getBoardList" resultMap="boardResult">
 		select * from board order by seq desc
 	</select>
 </sqlMap>
 
 
 <!-- 
-parameterClass : 이 SQL 실행할때 파라미터로 받을 객체, 물음표 있는 SQL문은 다 필요함  
+parameterClass : 이 SQL 실행할때 파라미터로 받을 객체, 물음표 있는 SQL문은 다 필요함, 생략 가능  
 # : 변수 (컬럼 이름과 VO 객체의 변수 이름을 구분)
 resultClass : <select>만 사용, 받은 검색결과(result set)를 매핑할 객체 (화면에 뿌리기 전) 
 VO : 디비에 SQL 날릴때 사용, 디비에서 받은거 담아서 화면에 뿌릴때 사용 
+resultMap : 매핑 하기 전 반환 받을 객체 선언 
+=> resultClass는 선언 안해도 자동으로 매핑해주지만 컬럼 이름과 변수의 이름이 동일하지 않은 경우 필요함 
+   (SQL에서 as 로 컬럼값 변경 가능, 언더바 안되고 대소문자는 상관없음)
+ <![CDATA[]]> : SQL에 작다, 크다 연산자 있을때 여기에 넣어야함 (문법)  
 -->
 
 

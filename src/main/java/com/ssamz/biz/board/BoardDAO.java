@@ -17,7 +17,7 @@ public class BoardDAO {
 	// SQL 명령어 없음 -> XML에 분리 
 	
 	public void insertBoard(BoardVO vo) throws SQLException {
-		ibatis.insert("insertBoard", vo);   // 자바 코드 한줄로 디비 연동 처리 
+		ibatis.insert("insertBoard", vo);   // 자바 코드 한줄로 디비 연동 처리 (sqlMappedStatement, parameter) 
 	}
 	
 	public void updateBoard(BoardVO vo) throws SQLException {
