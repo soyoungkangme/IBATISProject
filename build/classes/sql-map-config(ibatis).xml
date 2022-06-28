@@ -7,7 +7,7 @@
 <sqlMapConfig>
 
 
-    <!-- DataSource : 디비 커넥션 관련 정보 가지고 있는 객체 -->
+    <!-- DataSource : 디비 커넥션 관련 정보 가지고 있는 객체 (어떤 디비와 연결할지) -->
 	<properties resource="database.properties" />
 	<transactionManager type="JDBC">
 		<dataSource type="SIMPLE">
