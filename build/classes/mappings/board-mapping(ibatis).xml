@@ -7,18 +7,18 @@
 
 <!-- SQLMap 파일 (iBATIS 컨테이너가 로딩하는 XML)
 SQL, parameter 객체(BoardVO)의 변수, result 객체(resultMap)의 컬럼 매핑  
-SQL 태그 하나 당 MappedStatement 객체가 메모리에 하나씩 로딩됨 (<bean>처럼) -> id로 식별 (반드시 유니크 해야함, 보통 DAO의 메서드의 이름과 동일하게함) 
+SQL 태그 하나 당 MappedStatement 객체가 메모리에 하나씩 로딩됨 (<bean>처럼) -> iBAITS 컨테이너는 id로 식별 (반드시 유니크 해야함, 보통 DAO의 메서드의 이름과 동일하게함) 
 -->
 <sqlMap>
 
 
     <typeAlias alias="board" type="com.ssamz.biz.board.BoardVO"/>
     
-    
-    <resultMap class="board" id="boardResult">
+    <!-- 디비 검색 결과 매핑 (property = VO 객체의 변수, column = 검색결과 받은 result set의 컬럼) -->
+    <resultMap class="board" id="boardResult">   
         <result property="seq" column="SEQ"/>
         <result property="title" column="TILTE"/>
-        <result property="writer" column="WRITER"/>
+        <result property="writer" column="작성자"/>  <!-- 컬럼이름과 변수이름 다른 경우 resultMap 사용 (언더바, 대소문자 다른건 resultClass) -->
         <result property="content" column="CONTENT"/>
         <result property="regDate" column="REGDATE"/>
         <result property="cnt" column="CNT"/>
@@ -37,7 +37,7 @@ SQL 태그 하나 당 MappedStatement 객체가 메모리에 하나씩 로딩됨
 	</delete>
 	<select id="getBoard" resultClass="board">
 		<![CDATA[
-		select * from board where seq <= #seq#
+		select * from board where seq = #seq#
 		]]>
 	</select>
 	<select id="getBoardList" resultMap="boardResult">
@@ -51,10 +51,10 @@ SQL 태그 하나 당 MappedStatement 객체가 메모리에 하나씩 로딩됨
 VO : 디비에 SQL 날릴때 사용, 디비에서 받은거 담아서 화면에 뿌릴때 사용
 parameterClass : 이 SQL 실행할때 파라미터로 받을 객체, 물음표 있는 SQL문은 다 필요함, 생략 가능  
 # : 변수 (컬럼 이름과 VO 객체의 변수 이름을 구분) = 사용자 입력값 추출하여 담을 객체의 변수 (물음표 없으면 필요 없음) 
+
 resultClass : 받은 검색결과(result set)를 담을 객체 (화면에 뿌리기 전) 
-resultMap : 매핑 하기 전 반환 받을 객체 선언 
-=> resultClass는 선언 안해도 자동으로 매핑해주지만 컬럼 이름과 변수의 이름이 동일하지 않은 경우 필요함 
-   (SQL에서 as 로 컬럼값 변경 가능, 언더바 안되고 대소문자는 상관없음)
+resultMap : resultClass는 자동으로 매핑해주지만 컬럼 이름과 변수의 이름이 동일하지 않은 경우 필요함 (SQL에서 as 로 컬럼값 변경 가능, 언더바 안되고 대소문자는 상관없음)
+
 <![CDATA[]]> : SQL에 작다, 크다 연산자 있을때 여기에 넣어야함 (문법)  
 -->
 
