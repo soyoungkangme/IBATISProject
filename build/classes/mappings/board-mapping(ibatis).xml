@@ -41,7 +41,16 @@ SQL 태그 하나 당 MappedStatement 객체가 메모리에 하나씩 로딩됨
 		]]>
 	</select>
 	<select id="getBoardList" resultMap="boardResult">
-		select * from board order by seq desc
+		select * 
+		from board 
+		where 1 = 1 
+		<isEqual prepend="and" property="searchCondition" compareValue="TITLE">  
+		title like '%'||#searchKeyword#||'%'
+		</isEqual>
+		<isEqual prepend="and" property="searchCondition" compareValue="CONTENT">  
+		content like '%'||#searchKeyword#||'%'
+		</isEqual>
+		order by seq desc
 	</select>
 	
 </sqlMap>
@@ -56,6 +65,8 @@ resultClass : 받은 검색결과(result set)를 담을 객체 (화면에 뿌리
 resultMap : resultClass는 자동으로 매핑해주지만 컬럼 이름과 변수의 이름이 동일하지 않은 경우 필요함 (SQL에서 as 로 컬럼값 변경 가능, 언더바 안되고 대소문자는 상관없음)
 
 <![CDATA[]]> : SQL에 작다, 크다 연산자 있을때 여기에 넣어야함 (문법)  
+
+isEqual : property가 compareValue와 '같다면' where 1 = 1 and title like (SQL 여러개 만드는 대신) = dynamic SQL (하나의 SQL을 동적으로 변형시키며 처리 가능) 
 -->
 
 
